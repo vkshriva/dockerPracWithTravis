@@ -1,0 +1,49 @@
+
+# if u write like this it wont work as Dockerfile is not present rather thn here file name is Dockerfile.dev
+# version: '3'
+# services:
+#     any_name:
+#         build: .
+#         ports:
+#             - "3000:3000"
+#         volumes:
+#             - /app/node_modules
+#             - .:/app
+
+# for this we have to use 
+
+# version: '3'
+# services:
+#     any_name:
+#         stdin_open: true    // it was throwing error
+#         build: 
+#             context: .      // It means search in current directory 
+#             dockerfile: Dockerfile.dev      // fileName
+#         ports:
+#             - "3000:3000"
+#         volumes:
+#             - /app/node_modules
+#             - .:/app
+
+
+version: '3'
+services:
+    any_name:
+        stdin_open: true
+        build: 
+            context: .
+            dockerfile: Dockerfile.dev
+        ports:
+            - "3000:3000"
+        volumes:
+            - /app/node_modules
+            - .:/app
+    test_servc:
+        stdin_open: true
+        build:
+            context: .
+            dockerfile: Dockerfile.dev
+        volumes:
+            - /app/node_modules
+            - .:/app
+        command: ["npm", "run", "test"]

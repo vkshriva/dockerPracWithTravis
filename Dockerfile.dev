@@ -1,0 +1,54 @@
+# to build custom Docker file name u have to use 
+# docker build -f Dockerfile.dev .
+
+FROM node:alpine
+
+WORKDIR '/app'
+
+COPY package.json .
+
+RUN npm install
+
+COPY  . .
+
+CMD ["npm", "run", "start"]
+
+
+
+# 1. Docker volume :
+
+#  let say here u are copying src and public folder in container by mentioning COPY . .  command 
+#  but once docker build is done and u change any thing in your local it wont reflect 
+#  So instead of copying directory u can pass reference of local directory(pass by refernce ) so tht whenver changes happen it can be visible 
+
+# Syntax to run with docker voulme 
+
+# docker run  -it -p 3000:3000 -v /app/node_modules   -v $(pwd):/app <imageid>
+
+# -v $(pwd):/app <imageid>  => when u are writing this that will create reference of each directory present in pwd (present working directory) 
+# and keep this in :/app folder of container 
+
+# -v /app/node_modules => becoz of above step even they are expecting reference for node_modules  so to exclude that we have to rite this 
+
+
+
+
+# 2. Instead of writing huge command to run 
+# docker run  -it -p 3000:3000 -v /app/node_modules   -v $(pwd):/app <imageid> 
+
+# You can use docker-compose.yml as shorthand .Refer docker-compose.yml for reference 
+
+
+# 3. Running test cases 
+
+# docker run <imageid> npm run test
+
+# to look output more good use -it
+
+# docker run -it <imageid> npm run test
+
+# Or u can create new service in docker-compose to run test 
+
+
+
+
